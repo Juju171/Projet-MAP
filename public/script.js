@@ -89,3 +89,55 @@ if (loginForm) {
         }
     });
 }
+
+const profileForm = document.getElementById('profileForm');
+if (profileForm) {
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Fetch and display user profile data
+        try {
+            const response = await fetch('/profileData');
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('first_name').value = data.first_name;
+                document.getElementById('last_name').value = data.last_name;
+                document.getElementById('profilePicture').src = data.profile_image || 'default.jpg';
+                document.getElementById('matchHistory').innerHTML = data.match_history.map(match => `<li>${match}</li>`).join('');
+                document.getElementById('affiliationStatus').textContent = data.affiliation_status;
+            } else {
+                alert('Erreur lors de la récupération des données du profil');
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
+
+        // Handle profile update
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('first_name', document.getElementById('first_name').value);
+            formData.append('last_name', document.getElementById('last_name').value);
+            if (document.getElementById('profileImage').files[0]) {
+                formData.append('profileImage', document.getElementById('profileImage').files[0]);
+            }
+
+            try {
+                const response = await fetch('/updateProfile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Profil mis à jour avec succès');
+                    window.location.reload();
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        });
+    });
+}
