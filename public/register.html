@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css" /> 
+    <title>Inscription</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="about.html">À propos</a></li>
-      <li><a class="active" href="register.html">Inscription</a></li>
-      <li><a href="login.html">Connexion</a></li>
-    </ul>
-  </nav>
+    <nav>
+        <ul id="navBar">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="about.html">À propos</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li id="navRegister"><a class="active" href="register.html">Inscription</a></li>
+            <li id="navLogin"><a href="login.html">Connexion</a></li>
+            <li id="navProfile" style="display: none;"><a href="profile.html">Profil</a></li>
+            <li id="navLogout" style="display: none;"><a href="#" id="logoutLink">Se déconnecter</a></li>
+        </ul>
+    </nav>
     <div class="container">
         <h2>Inscription</h2>
         <form id="registerForm">

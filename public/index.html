@@ -16,7 +16,7 @@
       <li id="navRegister"><a href="register.html">Inscription</a></li>
       <li id="navLogin"><a href="login.html">Connexion</a></li>
       <li id="navProfile" style="display: none;"><a href="profile.html">Profil</a></li>
-      <li id="navLogout" style="display: none;"><a href="#" id="logoutLink">Se déconnecter</a></li>
+      <li id="navLogout" style="display: none;"><a href="index.html" id="logoutLink">Se déconnecter</a></li>
     </ul>
   </nav>
   
@@ -24,42 +24,46 @@
         <h1>Bienvenue sur la page d'accueil</h1>
         <p>Contenu de la page...</p>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-          try {
-              const response = await fetch('/isAuthenticated');
-              const result = await response.json();
-              
-              if (result.authenticated) {
-                  document.getElementById('navRegister').style.display = 'none';
-                  document.getElementById('navLogin').style.display = 'none';
-                  document.getElementById('navProfile').style.display = 'inline';
-                  document.getElementById('navLogout').style.display = 'inline';
-              } else {
-                  document.getElementById('navRegister').style.display = 'inline';
-                  document.getElementById('navLogin').style.display = 'inline';
-                  document.getElementById('navProfile').style.display = 'none';
-                  document.getElementById('navLogout').style.display = 'none';
-              }
-          } catch (error) {
-              console.error('Erreur:', error);
-          }
 
-          document.getElementById('logoutLink').addEventListener('click', async (e) => {
-              e.preventDefault();
-              try {
-                  const response = await fetch('/logout');
-                  const result = await response.json();
-                  if (response.ok) {
-                      window.location.href = 'index.html';
-                  } else {
-                      alert(result.error);
-                  }
-              } catch (error) {
-                  console.error('Erreur:', error);
-              }
-          });
-      });
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/isAuthenticated');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await response.json();
+                
+                if (result.authenticated) {
+                    document.getElementById('navRegister').style.display = 'none';
+                    document.getElementById('navLogin').style.display = 'none';
+                    document.getElementById('navProfile').style.display = 'inline';
+                    document.getElementById('navLogout').style.display = 'inline';
+                } else {
+                    document.getElementById('navRegister').style.display = 'inline';
+                    document.getElementById('navLogin').style.display = 'inline';
+                    document.getElementById('navProfile').style.display = 'none';
+                    document.getElementById('navLogout').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('/logout');
+                    const result = await response.json();
+                    if (response.ok) {
+                        window.location.href = 'index.html';
+                    } else {
+                        alert(result.error);
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
