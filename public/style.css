@@ -1,14 +1,6 @@
 /* styles.css */
 
-/* Styles de base pour le corps */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f5f5;
-}
-
-/* Styles pour la barre de navigation */
+/* Style pour la barre de navigation */
 .navbar {
   background-color: #333;
   overflow: hidden;
@@ -19,26 +11,28 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  justify-content: center;
 }
 
 .navbar-item {
-  flex: 1;
-  text-align: center;
+  padding: 14px 20px;
 }
 
 .navbar-item a {
-  display: block;
   color: white;
   text-align: center;
   padding: 14px 20px;
   text-decoration: none;
+  display: block;
 }
 
 .navbar-item a:hover {
   background-color: #575757;
+  color: white;
 }
 
-/* Styles pour le contenu principal */
+/* Style pour le contenu principal */
 .main-content {
   padding: 20px;
+  text-align: center;
 }
