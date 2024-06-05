@@ -1,9 +1,11 @@
+/* Style général du corps */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+/* Style de la liste de la navbar */
 ul {
   list-style-type: none;
   margin: 0;
@@ -15,10 +17,12 @@ ul {
   width: 100%;
 }
 
+/* Style des éléments de la liste */
 li {
   float: left;
 }
 
+/* Style des liens */
 li a {
   display: block;
   color: white;
@@ -27,14 +31,17 @@ li a {
   text-decoration: none;
 }
 
+/* Changement de couleur au survol */
 li a:hover:not(.active) {
   background-color: #111;
 }
 
+/* Style pour le lien actif */
 .active {
   background-color: #04AA6D;
 }
 
+/* Styles additionnels pour la navbar */
 .navbar {
   overflow: hidden;
   background-color: #333;
@@ -63,7 +70,19 @@ li a:hover:not(.active) {
   color: white;
 }
 
+ul.navbar li.right {
+  float: right;
+}
+
+/* Adaptation pour les petits écrans */
+@media screen and (max-width: 600px) {
+  ul.navbar li.right, 
+  ul.navbar li {
+    float: none;
+  }
+}
+
 /* Ajout de marges pour le contenu */
 body > div:not(.navbar) {
-  padding-top: 60px; /* Ajustez cette valeur en fonction de la hauteur de la navbar */
+  padding-top: 60px;
 }
