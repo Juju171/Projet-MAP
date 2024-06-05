@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css" /> 
+</head>
+<body>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="actualites.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">À propos</a></li>s
+        <li><a href="register.html">Inscription</a></li>
+        <li><a class="active" href="login.html">Connexion</a></li>
+      </ul>
+    </nav>
+    <div class="container">
+        <h2>Connexion</h2>
+        <form id="loginForm">
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
