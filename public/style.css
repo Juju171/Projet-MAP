@@ -1,130 +1,59 @@
-/* Styles généraux pour toute la page */
+/* styles.css */
+
+/* Style global */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
+  background-color: #f5f5f5;
+  color: #333;
   margin: 0;
   padding: 0;
 }
 
-/* Style de l'en-tête */
+/* Style pour l'en-tête */
 header {
-  background-color: #4a90e2;
-  color: white;
+  background-color: #4CAF50;
   padding: 10px 0;
   text-align: center;
-  font-size: 24px;
 }
 
-/* Conteneur principal */
-.container {
-  width: 80%;
-  margin: auto;
-  overflow: hidden;
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Styles pour les boutons */
-button {
-  background-color: #4a90e2;
+header nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+header nav ul li a {
   color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-button:hover {
-  background-color: #357ABD;
+header nav ul li a:hover {
+  text-decoration: underline;
 }
 
-/* Styles pour les champs de saisie */
-input[type="text"], input[type="password"], input[type="email"] {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0 20px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-/* Groupe de formulaires */
-.form-group {
-  margin-bottom: 15px;
-}
-
-/* Styles pour les étiquettes des champs de formulaire */
-label {
-  font-size: 14px;
-  margin-bottom: 5px;
-  display: block;
-}
-
-/* Styles pour les cartes (boîtes de contenu) */
-.card {
-  background: white;
+/* Style pour le contenu principal */
+main {
   padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  text-align: center;
 }
 
-/* Styles pour le pied de page */
+main h1 {
+  color: #4CAF50;
+}
+
+/* Style pour le pied de page */
 footer {
-  background-color: #4a90e2;
+  background-color: #333;
   color: white;
   text-align: center;
   padding: 10px 0;
   position: fixed;
-  bottom: 0;
   width: 100%;
-}
-
-/* Section Accueil */
-#accueil {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#accueil h1 {
-  color: #4a90e2;
-  font-size: 28px;
-}
-
-#accueil p {
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* Section Actualités */
-#actualites {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#actualites h2 {
-  color: #4a90e2;
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-#actualites article {
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-}
-
-#actualites article h3 {
-  color: #333;
-  font-size: 20px;
-}
-
-#actualites article p {
-  font-size: 14px;
-  line-height: 1.6;
+  bottom: 0;
 }

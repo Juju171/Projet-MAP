@@ -1,16 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// navbar.js
 
-function Navbar() {
-  return (
-    <nav>
-      <ul>
-        <li><Link to="/">Accueil</Link></li>
-        <li><Link to="/news">Actualités</Link></li>
-        <li><Link to="/events">Événements</Link></li>
-      </ul>
-    </nav>
-  );
+// Fonction pour injecter la barre de navigation
+function loadNavbar() {
+  const navbarHTML = `
+      <header>
+          <nav>
+              <ul>
+                  <li><a href="index.html">Accueil</a></li>
+                  <li><a href="actualites.html">Actualités</a></li>
+                  <li><a href="classement.html">Classement</a></li>
+                  <li><a href="recherche_joueur.html">Recherche de joueur</a></li>
+                  <li><a href="galerie.html">Galerie</a></li>
+                  <li><a href="tournoi.html">Tournoi</a></li>
+                  <li><a href="profil.html">Profil</a></li>
+              </ul>
+          </nav>
+      </header>
+  `;
+  document.body.insertAdjacentHTML('afterbegin', navbarHTML);
 }
 
-export default Navbar;
+// Charger la barre de navigation lorsque le document est prêt
+document.addEventListener('DOMContentLoaded', loadNavbar);

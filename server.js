@@ -1,25 +1,23 @@
 const express = require('express');
+const path = require('path');
 const app = express();
-const port = 5000;
 
-const news = [
-  { title: 'Tournoi d\'été terminé avec succès' },
-  { title: 'Nouveau court de tennis inauguré' }
-];
+app.use(express.static(path.join(__dirname, 'public')));
 
-const events = [
-  { name: 'Tournoi de Printemps', date: '2024-04-15' },
-  { name: 'Match Amical', date: '2024-05-10' }
-];
-
-app.get('/api/news', (req, res) => {
-  res.json(news);
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/api/events', (req, res) => {
-  res.json(events);
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'contact.html'));
+});
+
+// Ajoutez d'autres routes si nécessaire
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
