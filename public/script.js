@@ -5,17 +5,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Network response was not ok');
         }
         const result = await response.json();
-        
+
         if (result.authenticated) {
-            document.getElementById('navRegister').style.display = 'none';
-            document.getElementById('navLogin').style.display = 'none';
             document.getElementById('navProfile').style.display = 'inline';
             document.getElementById('navLogout').style.display = 'inline';
         } else {
             document.getElementById('navRegister').style.display = 'inline';
             document.getElementById('navLogin').style.display = 'inline';
-            document.getElementById('navProfile').style.display = 'none';
-            document.getElementById('navLogout').style.display = 'none';
         }
     } catch (error) {
         console.error('Erreur:', error);

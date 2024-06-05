@@ -87,11 +87,6 @@ body > div:not(.navbar) {
   padding-top: 60px;
 }
 
-#navProfile, #navLogout {
+#navRegister, #navLogin, #navProfile, #navLogout {
   display: none;
 }
-
-#navRegister, #navLogin {
-  display: inline;
-}
-
