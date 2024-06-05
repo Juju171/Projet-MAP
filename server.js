@@ -2,9 +2,18 @@ const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const Sequelize = require('sequelize');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
+
+const sequelize = new Sequelize('projet_map', 'root', '', {
+    host: 'localhost',
+    dialect: 'mysql'
+});
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -15,11 +24,27 @@ const db = mysql.createConnection({
 
 db.connect(err => {
     if (err) {
-        console.error('Erreur de connexion à la base de données:', err);
+        console.error('Erreur de connexion à la base de données MySQL:', err);
         return;
     }
     console.log('Connecté à la base de données MySQL');
 });
+
+const sessionStore = new SequelizeStore({
+    db: sequelize,
+});
+
+app.use(session({
+    secret: 'my_secret_key',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1800000 } // 30 minutes
+}));
+
+sessionStore.sync();
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/register', (req, res) => {
     const { email, first_name, last_name, password } = req.body;
@@ -28,6 +53,7 @@ app.post('/register', (req, res) => {
     const query = 'INSERT INTO users (email, first_name, last_name, password) VALUES (?, ?, ?, ?)';
     db.query(query, [email, first_name, last_name, hashedPassword], (err, result) => {
         if (err) {
+            console.error('Erreur lors de l\'enregistrement:', err);
             res.status(500).json({ error: 'Erreur lors de l\'enregistrement' });
             return;
         }
@@ -58,8 +84,39 @@ app.post('/login', (req, res) => {
             return;
         }
 
+        req.session.userId = user.id;
         res.status(200).json({ message: 'Connexion réussie' });
     });
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ error: 'Erreur lors de la déconnexion' });
+        }
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    });
+});
+
+// Route pour vérifier l'authentification
+app.get('/isAuthenticated', (req, res) => {
+    if (req.session.userId) {
+        res.json({ authenticated: true });
+    } else {
+        res.json({ authenticated: false });
+    }
+});
+
+function isAuthenticated(req, res, next) {
+    if (req.session.userId) {
+        return next();
+    }
+    res.status(401).json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
+}
+
+// Exemple d'utilisation de la fonction middleware
+app.get('/profile', isAuthenticated, (req, res) => {
+    res.json({ message: 'Voici votre profil' });
 });
 
 app.listen(3000, () => {
