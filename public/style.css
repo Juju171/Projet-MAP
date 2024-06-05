@@ -86,3 +86,12 @@ ul.navbar li.right {
 body > div:not(.navbar) {
   padding-top: 60px;
 }
+
+#navProfile, #navLogout {
+  display: none;
+}
+
+#navRegister, #navLogin {
+  display: inline;
+}
+
