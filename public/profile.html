@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
     <nav>
         <ul id="navBar">
             <li><a href="index.html">Accueil</a></li>
-            <li><a href="about.html">À propos</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
             <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">À propos</a></li>
             <li id="navRegister"><a href="register.html">Inscription</a></li>
             <li id="navLogin"><a href="login.html">Connexion</a></li>
             <li id="navProfile" style="display: none;"><a class="active" href="profile.html">Profil</a></li>
@@ -23,39 +24,6 @@
         <!-- Informations sur le profil de l'utilisateur -->
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('/isAuthenticated');
-                const result = await response.json();
-                
-                if (result.authenticated) {
-                    document.getElementById('navRegister').style.display = 'none';
-                    document.getElementById('navLogin').style.display = 'none';
-                    document.getElementById('navProfile').style.display = 'inline';
-                    document.getElementById('navLogout').style.display = 'inline';
-                } else {
-                    window.location.href = 'login.html';
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-
-            document.getElementById('logoutLink').addEventListener('click', async (e) => {
-                e.preventDefault();
-                try {
-                    const response = await fetch('/logout');
-                    const result = await response.json();
-                    if (response.ok) {
-                        window.location.href = 'index.html';
-                    } else {
-                        alert(result.error);
-                    }
-                } catch (error) {
-                    console.error('Erreur:', error);
-                }
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
