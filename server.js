@@ -1,13 +1,13 @@
-const express = require('express');  // Importer le framework Express
-const mysql = require('mysql');  // Importer le client MySQL
-const bcrypt = require('bcryptjs');  // Importer bcryptjs pour le hachage des mots de passe
-const bodyParser = require('body-parser');  // Importer body-parser pour analyser le corps des requêtes
-const session = require('express-session');  // Importer express-session pour gérer les sessions utilisateur
-const Sequelize = require('sequelize');  // Importer Sequelize pour interagir avec la base de données
-const SequelizeStore = require('connect-session-sequelize')(session.Store);  // Utiliser Sequelize pour stocker les sessions
-const multer = require('multer');  // Importer multer pour gérer les fichiers téléchargés
-const path = require('path');  // Importer path pour manipuler les chemins de fichiers
-const fs = require('fs');  // Importer fs pour manipuler le système de fichiers
+const express = require('express');
+const mysql = require('mysql');
+const bcrypt = require('bcryptjs');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const Sequelize = require('sequelize');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,23 +38,29 @@ const sessionStore = new SequelizeStore({
 });
 
 app.use(session({
-    secret: 'my_secret_key',  // Clé secrète pour signer les cookies de session
-    store: sessionStore,  // Utiliser Sequelize pour stocker les sessions
+    secret: 'my_secret_key',
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1800000 }  // 30 minutes
+    cookie: { maxAge: 1800000 } // 30 minutes
 }));
 
 sessionStore.sync();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Configure multer storage for profile images
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploads/');
+        const userId = req.session.userId;
+        const dir = path.join(__dirname, 'uploads/profiles', userId.toString());
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        cb(null, dir);
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, 'profile' + path.extname(file.originalname));
     }
 });
 const upload = multer({ storage: storage });
@@ -111,7 +117,6 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Route pour vérifier l'authentification
 app.get('/isAuthenticated', (req, res) => {
     if (req.session.userId) {
         res.json({ authenticated: true });
@@ -120,13 +125,12 @@ app.get('/isAuthenticated', (req, res) => {
     }
 });
 
-// Route pour récupérer les données du profil
 app.get('/profileData', (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
     }
 
-    const query = 'SELECT first_name, last_name, profile_image, match_history, affiliation_status FROM users WHERE id = ?';
+    const query = 'SELECT first_name, last_name, profile_image, match_history, affiliation_status, subscription_valid_until FROM users WHERE id = ?';
     db.query(query, [req.session.userId], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Erreur lors de la récupération des données du profil' });
@@ -142,26 +146,26 @@ app.get('/profileData', (req, res) => {
             last_name: user.last_name,
             profile_image: user.profile_image,
             match_history: JSON.parse(user.match_history || '[]'),
-            affiliation_status: user.affiliation_status
+            affiliation_status: user.affiliation_status,
+            subscription_valid_until: user.subscription_valid_until
         });
     });
 });
 
-// Route pour mettre à jour le profil
 app.post('/updateProfile', upload.single('profileImage'), (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
     }
 
-    const { first_name, last_name } = req.body;
+    const { first_name, last_name, subscription_valid_until } = req.body;
     let profileImage = null;
 
     if (req.file) {
-        profileImage = `/uploads/${req.file.filename}`;
+        profileImage = `/uploads/profiles/${req.session.userId}/profile${path.extname(req.file.originalname)}`;
     }
 
-    const query = 'UPDATE users SET first_name = ?, last_name = ?, profile_image = ? WHERE id = ?';
-    db.query(query, [first_name, last_name, profileImage, req.session.userId], (err, result) => {
+    const query = 'UPDATE users SET first_name = ?, last_name = ?, profile_image = ?, subscription_valid_until = ? WHERE id = ?';
+    db.query(query, [first_name, last_name, profileImage, subscription_valid_until, req.session.userId], (err, result) => {
         if (err) {
             console.error('Erreur lors de la mise à jour du profil:', err);
             return res.status(500).json({ error: 'Erreur lors de la mise à jour du profil' });

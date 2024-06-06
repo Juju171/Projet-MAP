@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Erreur:', error);
     }
 
-    // Gestion de la déconnexion
     const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
         logoutLink.addEventListener('click', async (e) => {
@@ -37,7 +36,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Fonction pour charger les données du profil
     const loadProfileData = async () => {
         try {
             const response = await fetch('/profileData');
@@ -47,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('firstNameDisplay').textContent = `Prénom: ${data.first_name}`;
                 document.getElementById('lastNameDisplay').textContent = `Nom: ${data.last_name}`;
                 document.getElementById('profilePicture').src = data.profile_image || 'default.jpg';
+                document.getElementById('subscriptionValidUntil').textContent = `Cotisation valable jusqu'au: ${data.subscription_valid_until || 'Non spécifiée'}`;
                 document.getElementById('matchHistory').innerHTML = data.match_history.map(match => `<li>${match}</li>`).join('');
                 document.getElementById('affiliationStatus').textContent = data.affiliation_status;
 
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // Si nous sommes sur la page de profil, charger les données du profil
     const profileForm = document.getElementById('profileForm');
     if (profileForm) {
         await loadProfileData();
@@ -94,17 +92,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        // Gestion du popup de modification de profil
         const editProfileBtn = document.getElementById('editProfileBtn');
         const modal = document.getElementById('profileModal');
         const closeBtn = document.getElementsByClassName('close')[0];
 
-        // Afficher le popup de modification du profil
         editProfileBtn.addEventListener('click', () => {
             modal.style.display = 'block';
         });
 
-        // Fermer le popup
         closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
         });
@@ -112,62 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.addEventListener('click', (event) => {
             if (event.target == modal) {
                 modal.style.display = 'none';
-            }
-        });
-    }
-
-    // Gestion du formulaire d'inscription
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const firstName = document.getElementById('first_name').value;
-            const lastName = document.getElementById('last_name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ first_name: firstName, last_name: lastName, email: email, password: password })
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert(result.message);
-                window.location.href = 'index.html';
-            } else {
-                alert(result.error);
-            }
-        });
-    }
-
-    // Gestion du formulaire de connexion
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email, password: password })
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert(result.message);
-                window.location.href = 'index.html';
-            } else {
-                alert(result.error);
             }
         });
     }
