@@ -194,3 +194,14 @@ app.get('/profile', isAuthenticated, (req, res) => {
 app.listen(3000, () => {
     console.log('Serveur démarré sur le port 3000');
 });
+
+app.listen(3000, () => {
+    console.log('Serveur démarré sur le port 3000');
+    console.log('Routes disponibles:');
+    console.log('GET /profileData');
+    console.log('GET /isAuthenticated');
+    console.log('POST /register');
+    console.log('POST /login');
+    console.log('GET /logout');
+    console.log('POST /updateProfile');
+});
