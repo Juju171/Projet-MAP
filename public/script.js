@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
+                console.log('Profil data:', data);
                 document.getElementById('firstNameDisplay').textContent = `Prénom: ${data.first_name}`;
                 document.getElementById('lastNameDisplay').textContent = `Nom: ${data.last_name}`;
                 document.getElementById('profilePicture').src = data.profile_image || 'default.jpg';

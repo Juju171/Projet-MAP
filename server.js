@@ -127,20 +127,24 @@ app.get('/isAuthenticated', (req, res) => {
 
 app.get('/profileData', (req, res) => {
     if (!req.session.userId) {
+        console.log('User not authenticated');
         return res.status(401).json({ error: 'Vous devez être connecté pour accéder à cette ressource' });
     }
 
     const query = 'SELECT first_name, last_name, profile_image, match_history, affiliation_status, subscription_valid_until FROM users WHERE id = ?';
     db.query(query, [req.session.userId], (err, results) => {
         if (err) {
+            console.error('Erreur lors de la récupération des données du profil:', err);
             return res.status(500).json({ error: 'Erreur lors de la récupération des données du profil' });
         }
 
         if (results.length === 0) {
+            console.log('Profil non trouvé pour l\'utilisateur ID:', req.session.userId);
             return res.status(404).json({ error: 'Données du profil non trouvées' });
         }
 
         const user = results[0];
+        console.log('Profil récupéré:', user);
         res.json({
             first_name: user.first_name,
             last_name: user.last_name,
@@ -151,6 +155,7 @@ app.get('/profileData', (req, res) => {
         });
     });
 });
+
 
 app.post('/updateProfile', upload.single('profileImage'), (req, res) => {
     if (!req.session.userId) {
